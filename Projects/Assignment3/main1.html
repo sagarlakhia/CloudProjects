@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Information!</title>
+  </head>
+  <body>
+    <body>
+      <table style="border: 1px solid black">
+        <tbody>
+          <tr>
+            <th width="35%" style="background-color: #CCFFCC; margin: 5px">Time</th>
+            <th style="background-color: #CCFFCC; margin: 5px">Magnitude</th>
+            <th style="background-color: #CCFFCC; margin: 5px">Place</th>
+            <th style="background-color: #CCFFCC; margin: 5px">type</th>
+
+			</tr>
+          		{% for item in placelist %}
+             <tr>
+               <td>{{ item['time'] }}</td>
+               <td>{{ item['mag'] }}</td>
+               <td>{{ item['place'] }}</td>
+			   <td>{{ item['type'] }}</td>
+             </tr>
+          {% endfor %}
+			
+				{{timerequired}}
+        </tbody>
+      </table>
+      
+	  
+      <br /><strong>INFO!</strong>
+      <form action="/sign" method="post">
+        <div>Magnitude<input type="text" name="magnitude"/></div>
+		<div>or</div>
+		<div>Location<input type="text" name="location"/></div>
+        <div><input type="submit" value="Get Data"></div>
+      </form>
+  </body>
+</html>

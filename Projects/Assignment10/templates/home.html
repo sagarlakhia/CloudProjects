@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+function show() { document.getElementById('cluster').style.display = 'block';
+document.getElementById('words').style.display = 'none';
+document.getElementById('clusterimg').style.display = 'block';
+document.getElementById('svgId').style.display = 'none';
+ }
+function hide() {
+document.getElementById('words').style.display = 'block';
+ document.getElementById('cluster').style.display = 'none';
+document.getElementById('clusterimg').style.display = 'none'; }
+
+
+
+</script>
+<form action="/request" method="post">
+<br>
+<table>
+<tr><td><input type="radio" name="radio" value="cluster" onclick='show();' >Cluster </td></tr>
+<tr><td>Number of Clusters:</td></tr>
+<tr><td><input style="display:none;" type="text" id="cluster" name="cluster" /></td></tr>
+<tr><td><input type="radio" name="radio" value="scatterchart" onclick='hide();'>WordCloud</td></tr>
+<tr><td>Enter the words seperated by comma</td></tr>
+<tr><td><textarea rows="4" cols="50" style="display:none;" name="words" id="words" >Hey</textarea></td></tr>
+<tr><td><input type="submit" value="submit"/></td></tr>
+</table>
+
+
+
+</form>
+
+<center>
+<img style={{display}} src="{{image}}" width="700" height="600" id="clusterimg">
+</center>
+
+<script type="text/javascript" src="{{ url_for('static', filename='d3.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='d3.layout.cloud.js') }}"></script>
+<input type="hidden" value="{{list1}}" id="mylist" name="mylist"/>
+<script>(function() {
+
+var list1=[]
+list1 =document.getElementById("mylist").value ;
+list1 = list1.replace('[','');
+list1 = list1.replace(']','');
+list1 = list1.replace(/'/g, '');
+var temp = new Array();
+temp = list1.split(",");
+var fill = d3.scale.category20();
+var layout = d3.layout.cloud()
+    .size([500, 500])
+    .words(temp.map(function(d) {
+      return {text: d, size: 10 + Math.random() * 90, test: "haha"};
+    }))
+    .padding(5)
+    .rotate(function() { return ~~(Math.random() * 2) * 90; })
+    .font("Impact")
+    .fontSize(function(d) { return d.size; })
+    .on("end", draw);
+
+layout.start();
+
+function draw(words) {
+  d3.select("body").append("svg")
+      .attr("width", layout.size()[0])
+      .attr("height", layout.size()[1])
+	  .attr("id","svgId")
+    .append("g")
+      .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+    .selectAll("text")
+      .data(words)
+    .enter().append("text")
+      .style("font-size", function(d) { return d.size + "px"; })
+      .style("font-family", "Impact")
+      .style("fill", function(d, i) { return fill(i); })
+      .attr("text-anchor", "middle")
+      .attr("transform", function(d) {
+        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+      })
+      .text(function(d) { return d.text; });
+}
+
+})();</script>
+</body>
+</html>

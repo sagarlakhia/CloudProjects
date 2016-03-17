@@ -1,0 +1,18 @@
+application: PROJECTID
+version: v1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+env_variables:
+
+handlers:
+- url: /.*
+  script: main.app
+
+libraries:
+- name: MySQLdb
+  version: "latest"
+
+- name: jinja2
+  version: "latest"

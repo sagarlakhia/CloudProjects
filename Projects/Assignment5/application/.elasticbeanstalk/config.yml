@@ -1,0 +1,10 @@
+branch-defaults:
+  default:
+    environment: Main-dev
+global:
+  application_name: Main
+  default_ec2_keyname: ec2instance
+  default_platform: Python 2.7
+  default_region: us-west-2
+  profile: null
+  sc: null
